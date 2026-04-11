@@ -6,6 +6,12 @@ terraform {
     }
   }
   required_version = ">= 1.0"
+backend "gcs" {
+  bucket = "terraform-gcp-learning-492920-state"
+  prefix = "vpc-terraform/state"
+  credentials = "../terraform-key.json"
+}
+
 }
 
 provider "google" {
