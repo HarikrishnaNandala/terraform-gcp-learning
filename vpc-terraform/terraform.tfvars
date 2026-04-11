@@ -1,0 +1,6 @@
+project_id = "terraform-gcp-learning-492920"
+region = "us-central1"
+zone = "us-central1-a"
+vpc_name = "learning-vpc"
+vpc_subnet = "learning-subnet"
+subnet_cidr = "10.0.2.0/24"
