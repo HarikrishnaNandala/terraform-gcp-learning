@@ -1,0 +1,33 @@
+name: 01 - Hello GitHub Actions
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Show runner environment
+        run: |
+          echo "============================"
+          echo "👋 Hello from GitHub Actions!"
+          echo "============================"
+          echo "🖥️  Runner OS   : $RUNNER_OS"
+          echo "📁  Workspace   : $GITHUB_WORKSPACE"
+          echo "🌿  Branch      : $GITHUB_REF_NAME"
+          echo "👤  Triggered by: $GITHUB_ACTOR"
+          echo "📦  Repository  : $GITHUB_REPOSITORY"
+          echo "============================"
+
+      - name: List repository files
+        run: ls -la
+
+      - name: Show current date and time
+        run: date
