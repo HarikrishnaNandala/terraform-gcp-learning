@@ -1,0 +1,51 @@
+name: 02 - Multi-Job Workflow
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  # ── Job 1 ──────────────────────────────────────
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Simulate linting
+        run: |
+          echo "🔍 Running lint checks..."
+          echo "✅ No lint errors found!"
+
+  # ── Job 2 ──────────────────────────────────────
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Simulate validation
+        run: |
+          echo "🔎 Running validation..."
+          echo "✅ All files are valid!"
+
+  # ── Job 3 (waits for lint AND validate) ────────
+  summary:
+    runs-on: ubuntu-latest
+    needs: [lint, validate]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Print summary
+        run: |
+          echo "======================================="
+          echo "✅ Lint     → Passed"
+          echo "✅ Validate → Passed"
+          echo "🚀 All checks passed — ready to deploy!"
+          echo "======================================="
+          echo "🌿 Branch : $GITHUB_REF_NAME"
+          echo "👤 Actor  : $GITHUB_ACTOR"
+          echo "======================================="
