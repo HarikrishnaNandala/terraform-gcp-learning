@@ -24,5 +24,6 @@ resource "google_storage_bucket" "cicd_bucket" {
     managed_by  = "terraform"
     environment = var.environment
     pipeline    = "github-actions"
+    phase       = "four"
   }
 }
