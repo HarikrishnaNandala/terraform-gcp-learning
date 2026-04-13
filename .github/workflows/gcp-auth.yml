@@ -1,0 +1,51 @@
+name: 05 - GCP Authentication via GitHub Actions
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  authentication-with-gcp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+            
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{secrets.GCP_SA_KEY}}
+
+      - name: setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{vars.GCP_PROJECT_ID}}
+            
+      - name: Verify authentication
+        run: |
+          echo "================================"
+          echo "Authentication Test to GCP"
+          echo "================================"
+          gcloud auth list
+          echo "================================"
+          gcloud config get-value project
+          echo "================================"
+            
+      - name: List GCP Buckets
+        run: |
+          echo "================================"
+          echo "Listing GCP Storage Buckets in your projects"
+          echo "================================"
+          gcloud storage buckets list --project=${{vars.GCP_PROJECT_ID}}
+            
+      - name: List GCP services enabled
+        run: |
+          echo "================================"
+          echo " Listing enabled GCP API services in your project"
+          echo "================================"
+          gcloud services list --enabled --project=${{vars.GCP_PROJECT_ID}}
+            
+            
