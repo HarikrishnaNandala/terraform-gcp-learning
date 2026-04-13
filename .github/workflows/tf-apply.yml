@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-  TF_VERSION: "1.4.8"
+  TF_VERSION: "1.14.8"
   WORKING_DIR: "./terraform"
 
 jobs:

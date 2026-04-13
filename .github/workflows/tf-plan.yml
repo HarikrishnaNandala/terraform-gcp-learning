@@ -8,7 +8,7 @@ on:
       - 'terraform/**'       # ← only triggers if terraform files changed
 
 env:
-  TF_VERSION: "1.4.8"
+  TF_VERSION: "1.14.8"
   WORKING_DIR: "./terraform"
 
 jobs:
