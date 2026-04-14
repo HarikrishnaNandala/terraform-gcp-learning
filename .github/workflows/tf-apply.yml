@@ -33,6 +33,10 @@ jobs:
   # ── Job 2 — Validate ───────────────────────────
   validate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
     needs: fmt-check
     steps:
       - name: Checkout code
@@ -41,7 +45,8 @@ jobs:
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.WIF_SERVICE_ACCOUNT }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -59,6 +64,9 @@ jobs:
   # ── Job 3 — Plan ───────────────────────────────
   plan:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     needs: validate
     outputs:
       plan_exit_code: ${{ steps.plan.outputs.exit_code }}
@@ -69,7 +77,8 @@ jobs:
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.WIF_SERVICE_ACCOUNT }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -101,6 +110,9 @@ jobs:
   # ── Job 4 — Apply ──────────────────────────────
   apply:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     needs: plan
     environment: production        # ← uses environment protection rules
     steps:
@@ -110,7 +122,8 @@ jobs:
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.WIF_SERVICE_ACCOUNT }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
